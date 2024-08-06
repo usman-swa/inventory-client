@@ -1,27 +1,27 @@
+import { useRef } from "react";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
+  TypedUseSelectorHook,
+  useDispatch,
+  useSelector,
+  Provider,
+} from "react-redux";
+import globalReducer from "@/state";
+import { api } from "@/state/api";
+import { setupListeners } from "@reduxjs/toolkit/query";
+
+import {
+  persistStore,
+  persistReducer,
   FLUSH,
+  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
-  REHYDRATE,
-  persistReducer,
-  persistStore,
 } from "redux-persist";
-import {
-  Provider,
-  TypedUseSelectorHook,
-  useDispatch,
-  useSelector,
-} from "react-redux";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-
 import { PersistGate } from "redux-persist/integration/react";
-import { api } from "@/state/api";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-import globalReducer from "@/state";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import { useRef } from "react";
 
 /* REDUX PERSISTENCE */
 const createNoopStorage = () => {

@@ -1,5 +1,7 @@
 "use client";
 
+import { useAppDispatch, useAppSelector } from "@/app/redux";
+import { setIsSidebarCollapsed } from "@/state";
 import {
   Archive,
   CircleDollarSign,
@@ -10,12 +12,10 @@ import {
   SlidersHorizontal,
   User,
 } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/app/redux";
-
+import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { setIsSidebarCollapsed } from "@/state";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 interface SidebarLinkProps {
   href: string;
@@ -28,10 +28,11 @@ const SidebarLink = ({
   href,
   icon: Icon,
   label,
-  isCollapsed
-}: SidebarLinkProps)  => {
-  const pathName  = usePathname();
-  const isActive = pathName === href || (pathName === "/" && href === "/dashboard");
+  isCollapsed,
+}: SidebarLinkProps) => {
+  const pathname = usePathname();
+  const isActive =
+    pathname === href || (pathname === "/" && href === "/dashboard");
 
   return (
     <Link href={href}>
@@ -44,30 +45,27 @@ const SidebarLink = ({
         }
       }`}
       >
+        <Icon className="w-6 h-6 !text-gray-700" />
 
-      <Icon className="w-6 h-6 !text-gray-700" />
-
-      <span
-        className={`${
-          isCollapsed ? "hidden" : "block"
-        } font-medium text-gray-700`}
-      >
-        {label}
-      </span>
-      </div>  
+        <span
+          className={`${
+            isCollapsed ? "hidden" : "block"
+          } font-medium text-gray-700`}
+        >
+          {label}
+        </span>
+      </div>
     </Link>
-    );
-}
+  );
+};
 
 const Sidebar = () => {
   const dispatch = useAppDispatch();
-
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed
   );
 
   const toggleSidebar = () => {
-    console.log("toggleSidebar");
     dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
   };
 
@@ -83,7 +81,13 @@ const Sidebar = () => {
           isSidebarCollapsed ? "px-5" : "px-8"
         }`}
       >
-        <div>Logo</div>
+        <Image
+          src="https://s3-inventorymanagement.s3.us-east-2.amazonaws.com/logo.png"
+          alt="edstock-logo"
+          width={27}
+          height={27}
+          className="rounded w-8"
+        />
         <h1
           className={`${
             isSidebarCollapsed ? "hidden" : "block"
@@ -102,7 +106,7 @@ const Sidebar = () => {
 
       {/* LINKS */}
       <div className="flex-grow mt-8">
-      <SidebarLink
+        <SidebarLink
           href="/dashboard"
           icon={Layout}
           label="Dashboard"
@@ -138,7 +142,6 @@ const Sidebar = () => {
           label="Expenses"
           isCollapsed={isSidebarCollapsed}
         />
-
       </div>
 
       {/* FOOTER */}
